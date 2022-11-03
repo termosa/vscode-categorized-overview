@@ -1,0 +1,87 @@
+* {
+  box-sizing: border-box;
+  font-family: var(--font-family);
+}
+
+body {
+  background-color: var(--vscode-sideBar-background);
+  padding-top: 5px;
+}
+
+.modules {
+  position: relative;
+}
+
+.fuzzy-search {
+  background-color: var(--vscode-input-background);
+  color: var(--vscode-input-foreground);
+  font-family: var(--font-family);
+  font-size: 13px;
+  resize: none;
+  width: 100%;
+  border: 0;
+  margin: 0;
+  padding: 5px;
+}
+
+.fuzzy-search:focus {
+  outline-color: var(--vscode-focusBorder);
+}
+
+.autocomplete {
+  position: absolute;
+  right: 0;
+  left: 0;
+
+  border: 1px solid var(--vscode-dropdown-border);
+  background: var(--vscode-sideBar-background);
+  color: var(--vscode-input-foreground);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: min(300px, 50vh);
+  overflow: auto;
+}
+
+.autocomplete > li {
+  padding: 2px;
+  cursor: pointer;
+}
+
+.autocomplete > li:hover,
+.autocomplete > li:focus {
+  background-color: var(--vscode-inputOption-activeBackground);
+}
+
+.list {
+  color: var(--vscode-descriptionForeground);
+  list-style: none;
+  font-size: 13px;
+  padding: 0;
+  margin: 0;
+}
+
+.list > li {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 4px 2px;
+}
+
+.list li:hover {
+  background-color: var(--vscode-list-hoverBackground);
+}
+
+.name,
+.category {
+  pointer-events: none;
+}
+
+.name {
+  color: var(--vscode-input-foreground);
+}
+
+.category {
+  font-size: 11px;
+}

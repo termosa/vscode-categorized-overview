@@ -10,16 +10,19 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:categorized-overview.helloWorld"
+    "onView:library"
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "categorized-overview.helloWorld",
-        "title": "Hello World"
-      }
-    ]
+    "views": {
+      "explorer": [
+        {
+          "id": "library",
+          "name": "Library",
+          "type": "webview"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
