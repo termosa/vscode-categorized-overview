@@ -1,13 +1,6 @@
 import * as vscode from "vscode";
-// import path from "path";
-
-const getUri = (
-  webview: vscode.Webview,
-  extensionUri: vscode.Uri,
-  pathList: Array<string>
-) => {
-  return webview.asWebviewUri(vscode.Uri.joinPath(extensionUri, "src", ...pathList));
-};
+import getModulesList from "./get-modules-list";
+import getUri from "./get-uri";
 
 interface Message {
   command: "openModule" | "log";
@@ -30,13 +23,9 @@ class ViewProvider implements vscode.WebviewViewProvider {
       "style.css",
     ]);
 
-    // const rootPath = this.config.includes
-    //   ? path.resolve(this.sourceDir, this.config.includes)
-    //   : this.sourceDir;
-
-    // this.list(rootPath, (list) =>
-    //   webviewView.webview.postMessage(JSON.stringify(list))
-    // );
+    getModulesList((list) => {
+      webviewView.webview.postMessage(JSON.stringify(list));
+    });
 
     const messageListener = webviewView.webview.onDidReceiveMessage(
       (message: Message) => {
