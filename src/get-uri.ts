@@ -6,7 +6,7 @@ const getUri = (
   pathList: Array<string>
 ) => {
   return webview.asWebviewUri(
-    vscode.Uri.joinPath(extensionUri, "src", ...pathList)
+    vscode.Uri.joinPath(extensionUri, ...pathList)
   );
 };
 

@@ -15,11 +15,18 @@ class ViewProvider implements vscode.WebviewViewProvider {
     webviewView.webview.options = {
       enableScripts: true,
     };
-    const scriptUri = "";
-    //getUri(webviewView.webview, this._extensionUri, ["main.js",]);
-    const fuzzySearch = "";
-    // getUri(webviewView.webview, this._extensionUri, ["node_modules", "list.js", "dist", "list.min.js",]);
+    const scriptUri = getUri(webviewView.webview, this._extensionUri, [
+      "src",
+      "main.js",
+    ]);
+    const fuzzySearch = getUri(webviewView.webview, this._extensionUri, [
+      "node_modules",
+      "list.js",
+      "dist",
+      "list.min.js",
+    ]);
     const stylesUri = getUri(webviewView.webview, this._extensionUri, [
+      "src",
       "style.css",
     ]);
 
