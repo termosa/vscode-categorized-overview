@@ -13,6 +13,7 @@
     "onView:library"
   ],
   "main": "./out/extension.js",
+  "targets": { "main": false },
   "contributes": {
     "views": {
       "explorer": [
