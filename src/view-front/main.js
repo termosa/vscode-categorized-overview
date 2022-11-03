@@ -5,7 +5,6 @@ if (typeof acquireVsCodeApi === "function") {
   // safe to use the function
   vscode = acquireVsCodeApi();
 }
-console.log('script is working')
 
 /**
  * Replace console.log with vscode message print
