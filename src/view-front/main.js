@@ -1,9 +1,11 @@
 // @ts-nocheck
+import List from "list.js";
 let vscode = undefined;
 if (typeof acquireVsCodeApi === "function") {
   // safe to use the function
   vscode = acquireVsCodeApi();
 }
+console.log('script is working')
 
 /**
  * Replace console.log with vscode message print
@@ -50,18 +52,17 @@ const list = new List(
       module
     ) => {
       const categoriesEnumeration = module.categories.join(", ");
-      return `<li title="${module.name} ${
-        categoriesEnumeration ? `(${categoriesEnumeration})` : ""
-      }">
+      return `<li title="${module.name} ${categoriesEnumeration ? `(${categoriesEnumeration})` : ""
+        }">
             <span class="name">${module.name}</span>
             ${module.categories
-              .map(
-                (category) =>
-                  `<span class="category">
+          .map(
+            (category) =>
+              `<span class="category">
                     ${category}
                 </span>`
-              )
-              .join(" ")}
+          )
+          .join(" ")}
         </li>`;
     },
   },
