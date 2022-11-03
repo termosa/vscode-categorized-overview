@@ -3,7 +3,7 @@ import getModulesList from "./get-modules-list";
 import renderHtml from "./renderHtml";
 
 interface Message {
-  command: "openModule" | "log";
+  command: "openModule" | "log"; // TODO: "openFile" | "showMessage"
   text: string;
   type?: "error" | "info" | "warning";
 }

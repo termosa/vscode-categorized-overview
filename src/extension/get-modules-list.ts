@@ -10,6 +10,10 @@ const getModulesList = async (onListSearch: (list: Module[]) => void) => {
         .map((folder) => folder.uri.path)
     : null;
   if (!overviewFoldersInFs) return;
+
+  // TODO: Remove matchOverviewFiles() and use workspaces (all) instead
+  // TODO: If multiple workspaces — add them as category to modules
+  // TODO: Using VSCode API need to add .vscode/settings.json option to configure glob() parameters
   const configs = await matchOverviewFiles(overviewFoldersInFs);
 
   if (!configs.length) return;

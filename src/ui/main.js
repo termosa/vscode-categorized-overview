@@ -1,3 +1,5 @@
+// TODO Change to TypeScript
+
 // @ts-nocheck
 import List from "list.js";
 let vscode = undefined;
@@ -51,17 +53,18 @@ const list = new List(
       module
     ) => {
       const categoriesEnumeration = module.categories.join(", ");
-      return `<li title="${module.name} ${categoriesEnumeration ? `(${categoriesEnumeration})` : ""
-        }">
+      return `<li title="${module.name} ${
+        categoriesEnumeration ? `(${categoriesEnumeration})` : ""
+      }">
             <span class="name">${module.name}</span>
             ${module.categories
-          .map(
-            (category) =>
-              `<span class="category">
+              .map(
+                (category) =>
+                  `<span class="category">
                     ${category}
                 </span>`
-          )
-          .join(" ")}
+              )
+              .join(" ")}
         </li>`;
     },
   },
@@ -83,26 +86,22 @@ const parseModuleCategories = (modules) => {
   });
 };
 
-window.addEventListener(
-  "message",
-  (
-    /**
-     * @type {{ data: Module[] }}
-     */
-    event
-  ) => {
-    /**
-     * @type {Module[]}
-     */
-    try {
-      allModules = JSON.parse(event.data);
-    } catch (err) {
-      log(err, "error");
-    }
-    list.clear();
-    list.add(parseModuleCategories(allModules));
+/**
+ * @param {Module[]} modules
+ */
+function handleModulesUpdate(modules) {
+  list.clear();
+  list.add(parseModuleCategories(modules));
+  allModules = modules;
+}
+
+window.addEventListener("message", (event) => {
+  try {
+    handleModulesUpdate(JSON.parse(event.data));
+  } catch (err) {
+    log(err, "error");
   }
-);
+});
 
 const modulesContainer = document.querySelector(".list");
 const searchField = document.querySelector(".fuzzy-search");
@@ -258,3 +257,53 @@ const openModuleFile = (event) => {
 
 autoComplete?.addEventListener("click", handleAutocomplete);
 modulesContainer?.addEventListener("click", openModuleFile);
+
+if (process.env.NODE_ENV === "development") {
+  handleModulesUpdate([
+    {
+      path: "src/api/loadUser.tsx",
+      name: "loadUser.tsx",
+      categories: ["user", "api"],
+    },
+    {
+      path: "src/api/loadMessages.tsx",
+      name: "loadMessages.tsx",
+      categories: ["messages", "api"],
+    },
+    {
+      path: "src/api/login.tsx",
+      name: "login.tsx",
+      categories: ["auth", "api"],
+    },
+    {
+      path: "src/api/logout.tsx",
+      name: "logout.tsx",
+      categories: ["auth", "api"],
+    },
+    {
+      path: "src/components/HomePage.tsx",
+      name: "HomePage.tsx",
+      categories: ["page", "component"],
+    },
+    {
+      path: "src/components/AboutUsPage.tsx",
+      name: "AboutUsPage.tsx",
+      categories: ["page", "component"],
+    },
+    {
+      path: "src/components/SettingsPage.tsx",
+      name: "SettingsPage.tsx",
+      categories: ["settings", "page", "component"],
+    },
+    {
+      path: "src/components/UserAvatar.tsx",
+      name: "UserAvatar.tsx",
+      categories: ["user", "component"],
+    },
+    {
+      path: "src/components/UserAvatarInput.tsx",
+      name: "UserAvatarInput.tsx",
+      categories: ["user", "form", "component"],
+    },
+  ]);
+}
