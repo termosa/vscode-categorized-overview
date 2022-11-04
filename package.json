@@ -34,7 +34,7 @@
           "items": {
             "type": "string"
           },
-          "description": "Specify paths that will be included in search"
+          "description": "Specifies a list of paths that will be included in search"
         }
       }
     }
