@@ -1,3 +1,5 @@
 /node_modules/
 /out/
 /.parcel-cache/
+/src/ui/main.js
+/src/ui/main.js.map

@@ -25,10 +25,22 @@
           "type": "webview"
         }
       ]
+    },
+    "configuration": {
+      "title": "Categorized Overview",
+      "properties": {
+        "categorizedOverview.includes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Specify paths that will be included in search"
+        }
+      }
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run build:view && npm run compile",
+    "vscode:prepublish": "npm run build:ui && npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
