@@ -1,9 +1,9 @@
 import * as vscode from "vscode";
 import getModulesList from "./get-modules-list";
-import getUri from "./get-uri";
+import renderHtml from "./renderHtml";
 
 interface Message {
-  command: "openModule" | "log";
+  command: "openFile" | "showMessage";
   text: string;
   type?: "error" | "info" | "warning";
 }
@@ -15,20 +15,6 @@ class ViewProvider implements vscode.WebviewViewProvider {
     webviewView.webview.options = {
       enableScripts: true,
     };
-    const scriptUri = getUri(webviewView.webview, this._extensionUri, [
-      "src",
-      "main.js",
-    ]);
-    const fuzzySearch = getUri(webviewView.webview, this._extensionUri, [
-      "node_modules",
-      "list.js",
-      "dist",
-      "list.min.js",
-    ]);
-    const stylesUri = getUri(webviewView.webview, this._extensionUri, [
-      "src",
-      "style.css",
-    ]);
 
     getModulesList((list) => {
       webviewView.webview.postMessage(JSON.stringify(list));
@@ -37,13 +23,13 @@ class ViewProvider implements vscode.WebviewViewProvider {
     const messageListener = webviewView.webview.onDidReceiveMessage(
       (message: Message) => {
         switch (message.command) {
-          case "openModule":
+          case "openFile":
             const module = vscode.Uri.file(message.text);
             vscode.workspace
               .openTextDocument(module)
               .then((doc) => vscode.window.showTextDocument(doc));
             return;
-          case "log": {
+          case "showMessage": {
             if (message.type === "error")
               vscode.window.showErrorMessage(message.text);
             if (message.type === "info")
@@ -60,27 +46,7 @@ class ViewProvider implements vscode.WebviewViewProvider {
 
     webviewView.onDidDispose(messageListener.dispose);
 
-    webviewView.webview.html = `<!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="stylesheet" href="${stylesUri}">
-      <title>Library</title>
-    </head>
-    <body>
-      <div id="modules" class="modules">
-        <input
-          class="fuzzy-search"
-          placeholder="Filter (use @ match categories)"
-        ></input>
-        <ul class="autocomplete" style="visibility: hidden;" id="autocomplete"></ul>
-        <ul class="list"></ul>
-      </div>
-      <script src="${fuzzySearch}"></script>
-      <script src="${scriptUri}"></script>
-    </body>
-    </html>`;
+    renderHtml(webviewView, this._extensionUri);
   }
 }
 

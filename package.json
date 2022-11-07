@@ -10,32 +10,52 @@
     "Other"
   ],
   "activationEvents": [
-    "onView:library"
+    "onView:categorizedOverview"
   ],
   "main": "./out/extension.js",
+  "targets": {
+    "main": false
+  },
   "contributes": {
     "views": {
       "explorer": [
         {
-          "id": "library",
-          "name": "Library",
+          "id": "categorizedOverview",
+          "name": "Categorized Overview",
           "type": "webview"
         }
       ]
+    },
+    "configuration": {
+      "title": "Categorized Overview",
+      "properties": {
+        "categorizedOverview.includes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Specifies a list of paths that will be included in search"
+        }
+      }
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run build:ui && npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "test": "node ./out/test/runTest.js",
+    "build:ui": "parcel build src/ui/index.html --dist-dir out/ui",
+    "dev:ui": "parcel src/ui/index.html --dist-dir out/ui",
+    "build": "npm run build:ui && npm run compile"
   },
   "devDependencies": {
     "@types/glob": "^8.0.0",
+    "@types/list.js": "^2.3.1",
     "@types/node": "16.x",
     "@types/vscode": "^1.73.0",
+    "@types/vscode-webview": "^1.57.0",
     "@typescript-eslint/eslint-plugin": "^5.38.1",
     "@typescript-eslint/parser": "^5.38.1",
     "@vscode/test-electron": "^2.1.5",
@@ -43,6 +63,7 @@
     "eslint": "^8.24.0",
     "glob": "^8.0.3",
     "list.js": "^2.3.1",
+    "parcel": "^2.7.0",
     "typescript": "^4.8.4"
   }
 }

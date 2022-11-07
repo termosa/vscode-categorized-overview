@@ -41,32 +41,60 @@ const parseModule = (relativePath: string, cwd: string): Module | null => {
   };
 };
 
+const parseIncludedFolders = (includedFolders: Array<string>) => {
+  if (!includedFolders.length) {
+    return "**/*";
+  }
+
+  if (includedFolders.length === 1) {
+    return `${includedFolders}/**/*`;
+  }
+
+  return `{${includedFolders.join(",")}}/**/*`;
+};
+
 const readModules = (
   dirname: string,
+  includedFolders: Array<string>,
   onRead: (modules: Array<Module>) => void,
   onError: (err: Error) => void
 ) => {
-  glob("**/*", { cwd: dirname, nodir: true }, (error, files) => {
-    if (error) {
-      onError(error);
-      return;
+  const globString = parseIncludedFolders(includedFolders);
+  glob(
+    globString,
+    {
+      cwd: dirname,
+      nodir: true,
+      ignore: ["node_modules/**"],
+    },
+    (error, files) => {
+      if (error) {
+        onError(error);
+        return;
+      }
+
+      const modules = files
+        .filter((fileName) => /.((j|t)sx?|mjs)$/.test(fileName))
+        .map((fileName) => parseModule(fileName, dirname))
+        .filter(Boolean)
+        .sort((a, b) =>
+          ((a && a.name) || "").localeCompare((b && b.name) || "")
+        );
+
+      onRead(modules as Array<Module>);
     }
-
-    const modules = files
-      .filter((fileName) => /.((j|t)sx?|mjs)$/.test(fileName))
-      .map((fileName) => parseModule(fileName, dirname))
-      .filter(Boolean)
-      .sort((a, b) => ((a && a.name) || "").localeCompare((b && b.name) || ""));
-
-    onRead(modules as Array<Module>);
-  });
+  );
 };
 
-const list = (dirname: string, callback: (modules: Array<Module>) => void) => {
-  readModules(dirname, callback, console.error);
+const list = (
+  dirname: string,
+  includedFolders: Array<string>,
+  callback: (modules: Array<Module>) => void
+) => {
+  readModules(dirname, includedFolders, callback, console.error);
 
   const process = chokidar.watch(dirname).on("change", () => {
-    readModules(dirname, callback, console.error);
+    readModules(dirname, includedFolders, callback, console.error);
   });
 
   return process.close;
