@@ -12,7 +12,7 @@ body {
   position: relative;
 }
 
-.fuzzy-search {
+.search {
   background-color: var(--vscode-input-background);
   color: var(--vscode-input-foreground);
   font-family: var(--font-family);
@@ -24,7 +24,7 @@ body {
   padding: 5px;
 }
 
-.fuzzy-search:focus {
+.search:focus {
   outline-color: var(--vscode-focusBorder);
 }
 
@@ -67,21 +67,13 @@ body {
   overflow: hidden;
   cursor: pointer;
   padding: 4px 2px;
+  color: var(--vscode-input-foreground);
 }
 
 .list li:hover {
   background-color: var(--vscode-list-hoverBackground);
 }
 
-.name,
-.category {
-  pointer-events: none;
-}
-
-.name {
-  color: var(--vscode-input-foreground);
-}
-
-.category {
-  font-size: 11px;
+.highlighted {
+  background: var(--vscode-list-filterMatchBackground);
 }

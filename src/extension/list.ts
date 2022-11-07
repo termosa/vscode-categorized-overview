@@ -1,7 +1,7 @@
 import * as chokidar from "chokidar";
 import * as fs from "fs";
 import * as path from "path";
-import * as glob from "glob";
+import glob from "glob";
 
 export interface Module {
   name: string;

@@ -53,6 +53,7 @@
   "devDependencies": {
     "@types/glob": "^8.0.0",
     "@types/list.js": "^2.3.1",
+    "@types/lodash": "^4.14.188",
     "@types/node": "16.x",
     "@types/vscode": "^1.73.0",
     "@types/vscode-webview": "^1.57.0",
@@ -61,8 +62,9 @@
     "@vscode/test-electron": "^2.1.5",
     "chokidar": "^3.5.3",
     "eslint": "^8.24.0",
+    "fuzzysort": "^2.0.3",
     "glob": "^8.0.3",
-    "list.js": "^2.3.1",
+    "lodash": "^4.17.21",
     "parcel": "^2.7.0",
     "typescript": "^4.8.4"
   }
