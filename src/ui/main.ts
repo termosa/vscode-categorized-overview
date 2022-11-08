@@ -1,6 +1,6 @@
 import create from "./create";
 import listenVscodeMessages from "./listenVscodeMessages";
-import renderModulesList from "./renderModulesList";
+import renderOutputList from "./renderOutputList";
 import useModules from "./useModules";
 
 const App = () => {
@@ -9,19 +9,21 @@ const App = () => {
   const output = create("output");
   const input = create("input", {
     placeholder: "Filter by categories using @",
-    oninput: (event: Event) =>
-      renderModulesList(
+    oninput: (event: Event) => {
+      return renderOutputList(
         output,
         modulesState.get(),
-        (event.target as HTMLInputElement).value
-      ),
+        event.target as HTMLInputElement
+      );
+    },
     className: "search",
   });
 
   listenVscodeMessages((newModules) => {
     modulesState.set(newModules);
-    renderModulesList(output, modulesState.get());
+    renderOutputList(output, modulesState.get());
   });
+
   return create("div", {}, [input, output]);
 };
 

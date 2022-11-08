@@ -1,13 +1,13 @@
-export interface Module {
+export interface IModule {
   path: string;
   name: string;
   categories: string[];
 }
 
 const useModules = () => {
-  let modules: Array<Module>;
+  let modules: Array<IModule>;
   return {
-    set: (newModules: Array<Module>) => {
+    set: (newModules: Array<IModule>) => {
       modules = newModules;
     },
     get: () => modules,

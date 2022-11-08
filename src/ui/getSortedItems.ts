@@ -1,8 +1,8 @@
 import fuzzysort from "fuzzysort";
-import { Module } from "./useModules";
+import { IModule } from "./useModules";
 
-const getSortedItems = (existingModules: Array<Module>, search?: string) => {
-  return fuzzysort.go(search ?? "", existingModules, {
+const getSortedItems = (modules: Array<IModule>, search?: string) => {
+  return fuzzysort.go(search ?? "", modules, {
     all: true,
     key: "name",
   });

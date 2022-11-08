@@ -1,7 +1,7 @@
 import log from "./log";
-import { Module } from "./useModules";
+import { IModule } from "./useModules";
 
-const listenVscodeMessages = (onChange: (modules: Array<Module>) => void) => {
+const listenVscodeMessages = (onChange: (modules: Array<IModule>) => void) => {
   window.addEventListener("message", (event) => {
     try {
       onChange(JSON.parse(event.data));
