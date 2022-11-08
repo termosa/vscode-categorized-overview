@@ -11,15 +11,19 @@ const createModulesList = (modules: Array<IModule>, searchValue?: string) => {
     "ul",
     { className: "list" },
     results.map((result) => {
+      const allCategories = result.obj.categories.join(", ");
       const liContent = highlightContent(result);
       const li = create(
         "li",
         {
           onclick: () => openFile(result.obj.path),
+          title: `${result.obj.name} ${
+            allCategories ? `(${allCategories})` : ""
+          }`,
         },
         []
       );
-      li.innerHTML = `${liContent} <span style="font-size: 11px; color: gray;">${result.obj.categories.join(', ')}<span>`;
+      li.innerHTML = `${liContent} <span class="categories">${allCategories}<span>`;
       return li;
     })
   );

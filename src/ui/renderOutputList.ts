@@ -7,7 +7,6 @@ import { IModule } from "./useModules";
 
 const categoryQueryRegEx = /@\w*/g;
 const extractCategories = (search: string) => {
-  // TODO: think better about this
   return (search.match(categoryQueryRegEx) || [])
     .map((c) => c.replace("@", ""))
     .filter(Boolean);
@@ -22,7 +21,6 @@ const renderOutputList = (
 
   let newModules = modules;
 
-  // Categories algorithm
   // Get all cats
   const categoriesSearch = extractCategories(target?.value || "");
   const requiredCategories: Array<Array<string>> = [];
@@ -49,7 +47,6 @@ const renderOutputList = (
       return module.categories.includes(...elem);
     });
   });
-  // END: Categories algorithm
 
   const modulesQuery = target?.value.replace(categoryQueryRegEx, "").trim();
   const list = createModulesList(newModules, modulesQuery);
