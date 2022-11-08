@@ -1,8 +1,17 @@
+import fuzzysort from "fuzzysort";
 import create from "./create";
 import createCategoriesList from "./createCategoriesList";
 import createModulesList from "./createModulesList";
 import getCategoryQuery from "./getCategoryQuery";
 import { IModule } from "./useModules";
+
+const categoryQueryRegEx = /@\w*/g;
+const extractCategories = (search: string) => {
+  // TODO: think better about this
+  return (search.match(categoryQueryRegEx) || [])
+    .map((c) => c.replace("@", ""))
+    .filter(Boolean);
+};
 
 const renderOutputList = (
   output: HTMLElement,
@@ -11,17 +20,45 @@ const renderOutputList = (
 ) => {
   Array.from(output.children).forEach((c) => c.remove());
 
-  const categoryQuery = getCategoryQuery(target);
+  let newModules = modules;
 
-  const list =
-    categoryQuery === undefined
-      ? createModulesList(modules, target?.value)
-      : createCategoriesList(modules, categoryQuery);
+  // Categories algorithm
+  // Get all cats
+  const categoriesSearch = extractCategories(target?.value || "");
+  const requiredCategories: Array<Array<string>> = [];
 
-  if (Array.from(list.children).length === 0) {
-    // @ts-ignore
-    const msg = categoryQuery === undefined ? create("span", {}, [`No modules matching "${target.value}"`]) : create("span", {}, [`No category matching "@${categoryQuery}"`]);
-    output.appendChild(msg);
+  // Run fuzzy search on each cat
+  for (const category of categoriesSearch) {
+    const result = fuzzysort.go(category, [
+      ...new Set(modules.flatMap((item) => item.categories)),
+    ]);
+    // If fuzzy search returns nothing show message and stop searching
+    if (!result.length) {
+      output.appendChild(
+        // @ts-ignore
+        create("span", {}, [`No matching category for "${category}"`])
+      );
+      return;
+    }
+    requiredCategories.push(result.map((r) => r.target));
+  }
+
+  newModules = modules.filter((module) => {
+    return requiredCategories.every((elem) => {
+      // @ts-ignore
+      return module.categories.includes(...elem);
+    });
+  });
+  // END: Categories algorithm
+
+  const modulesQuery = target?.value.replace(categoryQueryRegEx, "").trim();
+  const list = createModulesList(newModules, modulesQuery);
+
+  if (!Array.from(list.children).length) {
+    output.appendChild(
+      // @ts-ignore
+      create("span", {}, [`No modules matching "${modulesQuery}"`])
+    );
     return;
   }
 

@@ -19,7 +19,7 @@ const createModulesList = (modules: Array<IModule>, searchValue?: string) => {
         },
         []
       );
-      li.innerHTML = liContent;
+      li.innerHTML = `${liContent} <span style="font-size: 11px; color: gray;">${result.obj.categories.join(', ')}<span>`;
       return li;
     })
   );
