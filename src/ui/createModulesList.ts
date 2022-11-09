@@ -13,7 +13,7 @@ const createModulesList = (modules: Array<IModule>, searchValue?: string) => {
     results.map((result) => {
       const allCategories = result.obj.categories.join(", ");
       const liContent = highlightContent(result);
-      const li = create(
+      return create(
         "li",
         {
           onclick: () => openFile(result.obj.path),
@@ -21,10 +21,19 @@ const createModulesList = (modules: Array<IModule>, searchValue?: string) => {
             allCategories ? `(${allCategories})` : ""
           }`,
         },
-        []
+        [
+          create("span", {}, liContent),
+          " ",
+          create(
+            "span",
+            {
+              className: "categories",
+              innerHTML: result.obj.categoriesHtmlLayout ?? allCategories,
+            },
+            []
+          ),
+        ]
       );
-      li.innerHTML = `${liContent} <span class="categories">${allCategories}<span>`;
-      return li;
     })
   );
 };

@@ -1,8 +1,7 @@
 import fuzzysort from "fuzzysort";
 import create from "./create";
-import createCategoriesList from "./createCategoriesList";
 import createModulesList from "./createModulesList";
-import getCategoryQuery from "./getCategoryQuery";
+import filterModulesByRequiredCategories from "./filterModulesByRequiredCategories";
 import { IModule } from "./useModules";
 
 const categoryQueryRegEx = /@\w*/g;
@@ -18,10 +17,9 @@ const renderOutputList = (
   target?: HTMLInputElement
 ) => {
   Array.from(output.children).forEach((c) => c.remove());
+  modules.map((m) => (m.categoriesHtmlLayout = undefined));
 
-  let newModules = modules;
-
-  // Get all cats
+  // Get all cats from the search
   const categoriesSearch = extractCategories(target?.value || "");
   const requiredCategories: Array<Array<string>> = [];
 
@@ -33,7 +31,6 @@ const renderOutputList = (
     // If fuzzy search returns nothing show message and stop searching
     if (!result.length) {
       output.appendChild(
-        // @ts-ignore
         create("span", {}, [`No matching category for "${category}"`])
       );
       return;
@@ -41,19 +38,14 @@ const renderOutputList = (
     requiredCategories.push(result.map((r) => r.target));
   }
 
-  newModules = modules.filter((module) => {
-    return requiredCategories.every((elem) => {
-      // @ts-ignore
-      return module.categories.includes(...elem);
-    });
-  });
-
   const modulesQuery = target?.value.replace(categoryQueryRegEx, "").trim();
-  const list = createModulesList(newModules, modulesQuery);
+  const list = createModulesList(
+    filterModulesByRequiredCategories(modules, requiredCategories),
+    modulesQuery
+  );
 
   if (!Array.from(list.children).length) {
     output.appendChild(
-      // @ts-ignore
       create("span", {}, [`No modules matching "${modulesQuery}"`])
     );
     return;

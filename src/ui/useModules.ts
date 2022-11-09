@@ -1,7 +1,8 @@
 export interface IModule {
   path: string;
   name: string;
-  categories: string[];
+  categories: Array<string>;
+  categoriesHtmlLayout?: string
 }
 
 const useModules = () => {

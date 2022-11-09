@@ -1,5 +1,9 @@
-const create = (name = "div", props = {}, children: Array<HTMLElement> = []) =>
-  children.reduce((el, child) => {
+const create = (
+  name = "div",
+  props = {},
+  children: Array<string | HTMLElement> = []
+) =>
+  children.reduce((el: HTMLElement, child) => {
     el.appendChild(
       typeof child === "string" ? document.createTextNode(child) : child
     );
