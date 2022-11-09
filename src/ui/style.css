@@ -82,7 +82,3 @@ body {
 .highlighted {
   background: var(--vscode-list-filterMatchBackground);
 }
-
-.selectedCategory {
-  background: var(--vscode-list-filterMatchBackground);
-}

@@ -9,7 +9,10 @@ const filterModulesByRequiredCategories = (
     return requiredCategories.every((elements) => {
       for (const element of elements) {
         if (module.categories.includes(element)) {
-          highlightMatchedCategories(module, requiredCategories);
+          module.categoriesLayout = highlightMatchedCategories(
+            module,
+            requiredCategories
+          );
           return true;
         }
       }

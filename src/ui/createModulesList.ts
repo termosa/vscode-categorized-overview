@@ -1,6 +1,7 @@
 import create from "./create";
 import getSortedItems from "./getSortedItems";
 import highlightContent from "./highlightContent";
+import interleave from "./interleave";
 import openFile from "./openFile";
 import { IModule } from "./useModules";
 
@@ -28,9 +29,11 @@ const createModulesList = (modules: Array<IModule>, searchValue?: string) => {
             "span",
             {
               className: "categories",
-              innerHTML: result.obj.categoriesHtmlLayout ?? allCategories,
             },
-            []
+            interleave(
+              result.obj.categoriesLayout ?? result.obj.categories,
+              ", "
+            )
           ),
         ]
       );

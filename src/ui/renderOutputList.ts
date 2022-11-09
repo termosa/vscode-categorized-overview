@@ -17,7 +17,7 @@ const renderOutputList = (
   target?: HTMLInputElement
 ) => {
   Array.from(output.children).forEach((c) => c.remove());
-  modules.map((m) => (m.categoriesHtmlLayout = undefined));
+  modules.map((m) => (delete m.categoriesLayout));
 
   // Get all cats from the search
   const categoriesSearch = extractCategories(target?.value || "");
