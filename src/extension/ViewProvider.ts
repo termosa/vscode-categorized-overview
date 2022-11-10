@@ -16,15 +16,17 @@ class ViewProvider implements vscode.WebviewViewProvider {
       enableScripts: true,
     };
 
+    const viewModulesProcess = sendModulesListToView(webviewView.webview);
+    webviewView.onDidDispose(() => {
+      viewModulesProcess?.close();
+    });
 
     this._context.subscriptions.push(
       vscode.workspace.onDidChangeConfiguration((event) => {
-        if (!event.affectsConfiguration("categorizedOverview")) return;
-        sendModulesListToView(webviewView.webview);
+        if (!event.affectsConfiguration("categorizedOverview") || !viewModulesProcess) return;
+        viewModulesProcess.emit();
       })
     );
-
-    sendModulesListToView(webviewView.webview);
 
     const messageListener = webviewView.webview.onDidReceiveMessage(
       (message: Message) => {

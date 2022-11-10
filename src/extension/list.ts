@@ -96,13 +96,14 @@ const list = (
   includedFolders: Array<string>,
   callback: (modules: Array<Module>) => void
 ) => {
-  readModules(dirname, includedFolders, callback, console.error);
-
-  const process = chokidar.watch(dirname).on("change", () => {
+  const read = () =>
     readModules(dirname, includedFolders, callback, console.error);
-  });
 
-  return process.close;
+  read();
+
+  const process = chokidar.watch(dirname).on("change", read).on("unlink", read);
+
+  return { close: () => process.close(), emit: () => process.emit("change") };
 };
 
 export default list;
