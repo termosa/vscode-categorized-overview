@@ -17,10 +17,11 @@ const App = () => {
       );
     },
     className: "search",
-  });
+  }) as HTMLInputElement;
 
   listenVscodeMessages((newModules) => {
     modulesState.set(newModules);
+    input.value = "";
     renderOutputList(output, modulesState.get());
   });
 

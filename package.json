@@ -39,7 +39,7 @@
         "categorizedOverview.directoryAsCategory": {
           "type": "boolean",
           "default": true,
-          "description": "Selects whether to add the directory to the category list"
+          "description": "Specifies whether to use directory name as category name to filter files"
         }
       }
     }

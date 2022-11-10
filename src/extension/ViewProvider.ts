@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
-import getModulesList from "./get-modules-list";
 import renderHtml from "./renderHtml";
+import sendModulesListToView from "./sendModulesListToView";
 
 interface Message {
   command: "openFile" | "showMessage";
@@ -9,16 +9,22 @@ interface Message {
 }
 
 class ViewProvider implements vscode.WebviewViewProvider {
-  constructor(private readonly _extensionUri: vscode.Uri) {}
+  constructor(private readonly _context: vscode.ExtensionContext) {}
 
   async resolveWebviewView(webviewView: vscode.WebviewView) {
     webviewView.webview.options = {
       enableScripts: true,
     };
 
-    getModulesList((list) => {
-      webviewView.webview.postMessage(JSON.stringify(list));
-    });
+
+    this._context.subscriptions.push(
+      vscode.workspace.onDidChangeConfiguration((event) => {
+        if (!event.affectsConfiguration("categorizedOverview")) return;
+        sendModulesListToView(webviewView.webview);
+      })
+    );
+
+    sendModulesListToView(webviewView.webview);
 
     const messageListener = webviewView.webview.onDidReceiveMessage(
       (message: Message) => {
@@ -46,7 +52,7 @@ class ViewProvider implements vscode.WebviewViewProvider {
 
     webviewView.onDidDispose(messageListener.dispose);
 
-    renderHtml(webviewView, this._extensionUri);
+    renderHtml(webviewView, this._context.extensionUri);
   }
 }
 

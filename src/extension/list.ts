@@ -24,7 +24,10 @@ const parseModule = (relativePath: string, cwd: string): Module | null => {
       ? `${paths[0]}.${fileName.split(".").slice(-1)}`
       : fileName;
 
-  const directoryAsCategory = vscode.workspace.getConfiguration("categorizedOverview").get("directoryAsCategory");
+  const directoryAsCategory = !!vscode.workspace
+    .getConfiguration("categorizedOverview")
+    .get("directoryAsCategory");
+
   const categories = (content.match(/^\s*\*\s*@category\s.+$/gm) || []).concat(
     directoryAsCategory ? paths.map((path) => path.split("-")[0]) : []
   );
@@ -37,7 +40,7 @@ const parseModule = (relativePath: string, cwd: string): Module | null => {
   ];
 
   return {
-    name: name,
+    name: directoryAsCategory ? name : relativePath,
     categories: formattedCategories,
     path: filePath,
   };
