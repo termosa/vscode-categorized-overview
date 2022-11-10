@@ -2,6 +2,7 @@ import * as chokidar from "chokidar";
 import * as fs from "fs";
 import * as path from "path";
 import glob from "glob";
+import vscode from "vscode";
 
 export interface Module {
   name: string;
@@ -23,8 +24,9 @@ const parseModule = (relativePath: string, cwd: string): Module | null => {
       ? `${paths[0]}.${fileName.split(".").slice(-1)}`
       : fileName;
 
+  const directoryAsCategory = vscode.workspace.getConfiguration("categorizedOverview").get("directoryAsCategory");
   const categories = (content.match(/^\s*\*\s*@category\s.+$/gm) || []).concat(
-    paths.map((path) => path.split("-")[0])
+    directoryAsCategory ? paths.map((path) => path.split("-")[0]) : []
   );
   const formattedCategories = [
     ...new Set(

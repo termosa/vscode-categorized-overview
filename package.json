@@ -35,6 +35,11 @@
             "type": "string"
           },
           "description": "Specifies a list of paths that will be included in search"
+        },
+        "categorizedOverview.directoryAsCategory": {
+          "type": "boolean",
+          "default": true,
+          "description": "Selects whether to add the directory to the category list"
         }
       }
     }

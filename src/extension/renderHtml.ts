@@ -22,7 +22,7 @@ export default function renderHtml(
   extensionUri: vscode.Uri
 ) {
   const file = fs.readFileSync(
-    path.join(__dirname, "..", "ui", "index.html"),
+    path.join(extensionUri.path, "out", "ui", "index.html"),
     "utf-8"
   );
 
