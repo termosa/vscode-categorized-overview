@@ -98,12 +98,20 @@ const list = (
 ) => {
   const read = () =>
     readModules(dirname, includedFolders, callback, console.error);
+  const subscribe = () =>
+    chokidar.watch(dirname).on("change", read).on("unlink", read);
 
   read();
+  let process = subscribe();
 
-  const process = chokidar.watch(dirname).on("change", read).on("unlink", read);
-
-  return { close: () => process.close(), emit: () => process.emit("change") };
+  return {
+    close: () => process.close(),
+    emit: () => process.emit("change"),
+    reload: () => {
+      read();
+      process = subscribe()
+    },
+  };
 };
 
 export default list;

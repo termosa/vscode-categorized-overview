@@ -28,6 +28,14 @@ class ViewProvider implements vscode.WebviewViewProvider {
       })
     );
 
+    webviewView.onDidChangeVisibility(() => {
+      if (webviewView.visible) {
+        viewModulesProcess?.reload();
+        return;
+      }
+      viewModulesProcess?.close();
+    });
+
     const messageListener = webviewView.webview.onDidReceiveMessage(
       (message: Message) => {
         switch (message.command) {
