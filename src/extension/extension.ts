@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import modulesSearch from "./modulesSearch";
 import ViewProvider from "./ViewProvider";
 
 export function activate(context: vscode.ExtensionContext) {
@@ -8,6 +9,10 @@ export function activate(context: vscode.ExtensionContext) {
       new ViewProvider(context),
       { webviewOptions: { retainContextWhenHidden: true } }
     )
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("categorizedOverview.search", modulesSearch)
   );
 }
 

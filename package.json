@@ -26,6 +26,12 @@
         }
       ]
     },
+    "commands": [
+      {
+        "command": "categorizedOverview.search",
+        "title": "Categorized Overview: Fast Search"
+      }
+    ],
     "configuration": {
       "title": "Categorized Overview",
       "properties": {
