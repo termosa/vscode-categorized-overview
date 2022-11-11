@@ -1,8 +1,10 @@
 {
   "name": "categorized-overview",
-  "displayName": "categorized-overview",
+  "displayName": "Atlas: Categorized Overview",
   "description": "",
   "version": "0.0.0",
+  "icon": "atlas.png",
+  "publisher": "Atlas Support Inc",
   "engines": {
     "vscode": "^1.73.0"
   },
@@ -59,7 +61,10 @@
     "test": "node ./out/test/runTest.js",
     "build:ui": "parcel build src/ui/index.html --dist-dir out/ui",
     "dev:ui": "parcel src/ui/index.html --dist-dir out/ui",
-    "build": "npm run build:ui && npm run compile"
+    "build": "npm run build:ui && npm run compile",
+    "build:extension": "vsce package --allow-missing-repository --out atlas-categorized-overview.vsix",
+    "add:extension": "code --install-extension atlas-categorized-overview.vsix",
+    "start": "npm run build:extension && npm run add:extension"
   },
   "devDependencies": {
     "@types/glob": "^8.0.0",
@@ -69,11 +74,13 @@
     "@typescript-eslint/eslint-plugin": "^5.38.1",
     "@typescript-eslint/parser": "^5.38.1",
     "@vscode/test-electron": "^2.1.5",
+    "typescript": "^4.8.4",
+    "eslint": "^8.24.0"
+  },
+  "dependencies": {
     "chokidar": "^3.5.3",
-    "eslint": "^8.24.0",
     "fuzzysort": "^2.0.3",
-    "glob": "^8.0.3",
     "parcel": "^2.7.0",
-    "typescript": "^4.8.4"
+    "glob": "^8.0.3"
   }
 }
