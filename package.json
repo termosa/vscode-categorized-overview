@@ -2,7 +2,7 @@
   "name": "categorized-overview",
   "displayName": "categorized-overview",
   "description": "",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.73.0"
   },
@@ -27,6 +27,9 @@
       ]
     }
   },
+  "repository": "termosa/vscode-categorized-overview",
+  "publisher": "termosa",
+  "license": "MIT",
   "scripts": {
     "vscode:prepublish": "npm run build:view && npm run compile",
     "compile": "tsc -p ./",
@@ -34,9 +37,9 @@
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js",
-    "build:ui": "parcel build src/ui/index.html --dist-dir out/ui",
+    "build:view": "parcel build src/ui/index.html --dist-dir out/ui",
     "dev:ui": "parcel src/ui/index.html --dist-dir out/ui",
-    "build": "npm run build:ui && npm run compile"
+    "build": "npm run build:view && npm run compile"
   },
   "devDependencies": {
     "@types/glob": "^8.0.0",
